@@ -1,31 +1,23 @@
-const express = require ('express')
-const bodyParser = require ('body-parser')
-const app = express()
+//Criando a constante routes
+const { Router } = require ('express')
+const routes = new Router()
 
-app.use(bodyParser.json())
 
-app.get ('/produtos', async(req, res) =>{
+// Get para retornar as informações de todos os produtos
+routes.get ('/produtos', async(req, res) =>{
     return res.status(200).json(produtos)
 });
-app.get ('/produtos/:id', async(req,res)=>{
+//Get para retornar as informações de um produto baseado em seu id
+routes.get ('/produtos/:id', async(req,res)=>{
     const { id } = req.params
-    for (let produto of produtos){
-        if (produto.id == id){
-            return res.status(202).json([produto])
-        }
-    }
-    const response = {
-        status: 404,
-        mensagem: 'Not-Found'
-    }
-    return res.status(404).json(response)
+    return console.log(id)
 })
-
-app.get ('/departamentos', async(req, res) =>{
+//Get para retornar as informações de todos os departamentos
+routes.get ('/departamentos', async(req, res) =>{
     return res.status(200).json(departamentos)
 })
-
-app.get ('/departamentos/:id', async(req,res)=>{
+//Get para retornar as informações de de um departamento baseado em seu id
+routes.get ('/departamentos/:id', async(req,res)=>{
     const { id } = req.params
     for (let departamento of departamentos){
         if (departamento.id == id){
@@ -38,8 +30,9 @@ app.get ('/departamentos/:id', async(req,res)=>{
     }
     return res.status(404).json(response)
 })
-
-app.post('/produtos', async(req,res)=>{
+//Post para adicionar ao banco de dados um novo produto, retornando um 
+//json do produto sendo adicionado
+routes.post('/produtos', async(req,res)=>{
     const resposta = req.body
     for (let i of resposta){
         if (i.id == 0 || i.descricao === undefined|| i.preco === 0|| i.estoque === undefined|| i.disponivel != true && i.disponivel != false|| i.destaque != true && i.destaque != false || i.departamento_id == 0 )
@@ -50,7 +43,9 @@ app.post('/produtos', async(req,res)=>{
     produtos = produtos.concat(resposta);
     return res.status(202).json(resposta)
 })
-app.put('/produtos/:id', async(req,res)=>{
+//Put alterando um produto já na base de dados especificado pelo seu ID, 
+//recebendo um json com o novo produto
+routes.put('/produtos/:id', async(req,res)=>{
     const resposta = req.body
     const { id } = req.params
     for (let i of resposta){
@@ -80,6 +75,9 @@ const response = {
 }
 return res.status(404).json(response)});
 
-app.get('*', (async(req,res)=>{
+//Um get para qualquer endpoint que não esteja definido
+routes.get('*', (async(req,res)=>{
     return res.status(404)
 }))
+
+module.exports = routes
