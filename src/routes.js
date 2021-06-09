@@ -1,6 +1,10 @@
 //Criando a constante routes
 const { Router } = require ('express')
 const routes = new Router()
+const connection = require('../Database/database_connection')
+
+//Criando conexão com o banco de dados
+connection.connect()
 
 
 // Get para retornar as informações de todos os produtos
