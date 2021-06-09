@@ -4,4 +4,6 @@ class produtos_controller {
     }
 }
 
+//olá tudo bem
+
 module.exports = new produtos_controller()
