@@ -1,21 +1,17 @@
 //Criando a constante routes
 const { Router } = require ('express')
 const routes = new Router()
-const connection = require('../Database/database_connection')
+const connection = require('../Database/database_connection');
+const produtos_controller = require('./controllers/produtos_controller');
 
 //Criando conexão com o banco de dados
 connection.connect()
 
 
 // Get para retornar as informações de todos os produtos
-routes.get ('/produtos', async(req, res) =>{
-    return res.status(200).json(produtos)
-});
+routes.get ('/produtos', produtos_controller.read);
 //Get para retornar as informações de um produto baseado em seu id
-routes.get ('/produtos/:id', async(req,res)=>{
-    const { id } = req.params
-    return console.log(id)
-})
+routes.get ('/produtos/:id', produtos_controller.read);
 //Get para retornar as informações de todos os departamentos
 routes.get ('/departamentos', async(req, res) =>{
     return res.status(200).json(departamentos)
