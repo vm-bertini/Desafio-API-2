@@ -3,6 +3,7 @@ const { Router } = require ('express')
 const routes = new Router()
 const connection = require('../Database/database_connection');
 const produtos_controller = require('./controllers/produtos_controller');
+const departamentos_controller = require('./controllers/departamentos_controller');
 
 //Criando conexão com o banco de dados
 connection.connect()
@@ -13,23 +14,9 @@ routes.get ('/produtos', produtos_controller.read);
 //Get para retornar as informações de um produto baseado em seu id
 routes.get ('/produtos/:id', produtos_controller.read);
 //Get para retornar as informações de todos os departamentos
-routes.get ('/departamentos', async(req, res) =>{
-    return res.status(200).json(departamentos)
-})
+routes.get ('/departamentos', departamentos_controller.read)
 //Get para retornar as informações de de um departamento baseado em seu id
-routes.get ('/departamentos/:id', async(req,res)=>{
-    const { id } = req.params
-    for (let departamento of departamentos){
-        if (departamento.id == id){
-            return res.json([departamento])
-        }
-    }
-    const response = {
-        status: 404,
-        mensagem: 'Not-Found'
-    }
-    return res.status(404).json(response)
-})
+routes.get ('/departamentos/:id', departamentos_controller.read)
 //Post para adicionar ao banco de dados um novo produto, retornando um 
 //json do produto sendo adicionado
 routes.post('/produtos', async(req,res)=>{
