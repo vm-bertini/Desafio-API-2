@@ -4,7 +4,7 @@ var connection = mysql.createConnection({
     host: '',
     user: '',
     password: '',
-    database: ''
+    database: 'Banco_Desafio_API'
   })
 
 module.exports = connection
