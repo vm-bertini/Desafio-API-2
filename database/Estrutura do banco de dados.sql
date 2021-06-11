@@ -61,7 +61,7 @@ CREATE TABLE `departamentos` (
   `nome` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `nome_UNIQUE` (`nome`)
-) ENGINE=InnoDB AUTO_INCREMENT=1  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -101,7 +101,7 @@ CREATE TABLE `estoques` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `quantidade em estoque` int DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -217,7 +217,7 @@ Insert into estoques (`quantidade em estoque`) values (_qtd_estoque);
 Insert into departamentos (nome) values (_Nome_depto)
 on duplicate key update departamentos.nome = departamentos.nome;
 insert into produtos (código, descrição, preço, disponível, destaque , estoque_id, departamento_id) 
-select _código,_descrição,_preço,_disponível,_destaque, estoques.id,departamentos.id from departamentos, estoques
+select _código,_descrição,_preço,_disponível,_destaque, max(estoques.id),departamentos.id from departamentos, estoques
 where departamentos.nome = _Nome_depto and estoques.`quantidade em estoque` = _qtd_estoque;
 END ;;
 DELIMITER ;
@@ -235,4 +235,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-11  4:06:44
+-- Dump completed on 2021-06-11  4:54:00
