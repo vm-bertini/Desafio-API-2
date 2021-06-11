@@ -35,7 +35,7 @@ class produtos_controller {
             return res.status(404).json(resposta_400.Not_Found)
             }
 
-            return res.status(200).json(emp)
+            return res.status(200).json(rows[7])
         })
     }
 }
