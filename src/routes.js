@@ -4,6 +4,8 @@ const routes = new Router()
 const connection = require('../Database/database_connection');
 const produtos_controller = require('./controllers/produtos_controller');
 const departamentos_controller = require('./controllers/departamentos_controller');
+const resposta_400 = require('../Respostas/400');
+const { Not_Found } = require('./Respostas/400');
 
 //Criando conexão com o banco de dados
 connection.connect()
@@ -26,7 +28,7 @@ routes.put('/produtos/:id', produtos_controller.update);
 
 //Um get para qualquer endpoint que não esteja definido
 routes.get('*', (async(req,res)=>{
-    return res.status(404)
+    return res.status(404).json(resposta_400.Not_Found)
 }))
 
 module.exports = routes
