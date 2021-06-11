@@ -22,35 +22,7 @@ routes.get ('/departamentos/:id', departamentos_controller.read)
 routes.post('/produtos', produtos_controller.create)
 //Put alterando um produto já na base de dados especificado pelo seu ID, 
 //recebendo um json com o novo produto
-routes.put('/produtos/:id', async(req,res)=>{
-    const resposta = req.body
-    const { id } = req.params
-    for (let i of resposta){
-        if (i.id == 0 || i.descricao === undefined|| i.preco === 0|| i.estoque === undefined|| i.disponivel != true && i.disponivel != false|| i.destaque != true && i.destaque != false || i.departamento_id == 0 )
-        {
-            const response = {
-                status: 400,
-                mensagem: 'Bad-Request'
-            }
-            return res.status(400).json(response)
-        }
-    }
-    for (let produto of produtos){
-        if (produto.id == id){
-            produto.id = resposta[0].id
-            produto.estoque = resposta[0].estoque
-            produto.disponivel = resposta[0].disponivel
-            produto.destaque = resposta[0].destaque
-            produto.departamento_id = resposta[0].departamento_id
-            return res.status(202).json(produtos)
-        }
-        
-}
-const response = {
-    status: 404,
-    mensagem: 'Not-Found'
-}
-return res.status(404).json(response)});
+routes.put('/produtos/:id', produtos_controller.update);
 
 //Um get para qualquer endpoint que não esteja definido
 routes.get('*', (async(req,res)=>{

@@ -9,4 +9,6 @@ module.exports = {
     post: 
         "SET @código= ?; SET @descrição= ?; SET @preço= ?; SET @disponível= ?; SET @destaque= ?; SET @qtd_estoque= ?; SET @Nome_depto = ?; \
         CALL`novo produto`(@código,@descrição,@preço,@disponível,@destaque,@qtd_estoque,@Nome_depto)",
+    put: "SET @id = ?; SET @código= ?; SET @descrição= ?; SET @preço= ?; SET @disponível= ?; SET @destaque= ?; SET @qtd_estoque= ?; SET @Nome_depto = ?; \
+    CALL`alteração de produto`(@id,@código,@descrição,@preço,@disponível,@destaque,@qtd_estoque,@Nome_depto)"
 }
