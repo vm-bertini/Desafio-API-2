@@ -19,17 +19,7 @@ routes.get ('/departamentos', departamentos_controller.read)
 routes.get ('/departamentos/:id', departamentos_controller.read)
 //Post para adicionar ao banco de dados um novo produto, retornando um 
 //json do produto sendo adicionado
-routes.post('/produtos', async(req,res)=>{
-    const resposta = req.body
-    for (let i of resposta){
-        if (i.id == 0 || i.descricao === undefined|| i.preco === 0|| i.estoque === undefined|| i.disponivel != true && i.disponivel != false|| i.destaque != true && i.destaque != false || i.departamento_id == 0 )
-        {
-        return res.status(400)
-        }
-    }
-    produtos = produtos.concat(resposta);
-    return res.status(202).json(resposta)
-})
+routes.post('/produtos', produtos_controller.create)
 //Put alterando um produto já na base de dados especificado pelo seu ID, 
 //recebendo um json com o novo produto
 routes.put('/produtos/:id', async(req,res)=>{
