@@ -61,7 +61,7 @@ CREATE TABLE `departamentos` (
   `nome` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `nome_UNIQUE` (`nome`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -101,7 +101,7 @@ CREATE TABLE `estoques` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `quantidade em estoque` int DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -194,6 +194,57 @@ CREATE TABLE `produtos` (
 --
 -- Dumping routines for database 'banco_desafio_api'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `alteração de produto` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `alteração de produto`(
+in _id int,
+in _código int, 
+in _descrição varchar(255),
+in _preço int, 
+in _disponível varchar(3), 
+in _destaque varchar(3), 
+in _qtd_estoque int, 
+in _Nome_depto varchar(255))
+BEGIN
+Update estoques
+inner join produtos on estoques.id = produtos.estoque_id
+set`quantidade em estoque` = _qtd_estoque 
+where produtos.id = _id  ;
+Update ignore departamentos
+inner join produtos on departamentos.id = produtos.departamento_id
+set nome = _Nome_depto
+where produtos.id = _id;
+Update produtos, estoques, departamentos
+set código = _código,
+    descrição = _descrição,
+    preço = _preço,
+    disponível = _disponível,
+    destaque = _destaque,
+    estoque_id = estoques.id,
+    departamento_id = departamentos.id
+where produtos.id = _id;
+Select produtos.ID, produtos.código, produtos.descrição, 
+produtos.preço, produtos.disponível, produtos.destaque, estoques.`quantidade em estoque`, departamentos.nome as `Nome do departamento` from produtos
+inner join estoques
+on estoques.id = produtos.estoque_id
+inner join departamentos
+on departamentos.id = produtos.departamento_id
+Where produtos.id = _id
+;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `novo produto` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -219,6 +270,13 @@ on duplicate key update departamentos.nome = departamentos.nome;
 insert into produtos (código, descrição, preço, disponível, destaque , estoque_id, departamento_id) 
 select _código,_descrição,_preço,_disponível,_destaque, max(estoques.id),departamentos.id from departamentos, estoques
 where departamentos.nome = _Nome_depto and estoques.`quantidade em estoque` = _qtd_estoque;
+Select produtos.ID, produtos.código, produtos.descrição, 
+produtos.preço, produtos.disponível, produtos.destaque, estoques.`quantidade em estoque`, departamentos.nome as `Nome do departamento` from produtos
+inner join estoques
+on estoques.id = produtos.estoque_id
+inner join departamentos
+on departamentos.id = produtos.departamento_id
+Where produtos.id = last_insert_id();
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -235,4 +293,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-11  4:54:00
+-- Dump completed on 2021-06-11  6:57:53
