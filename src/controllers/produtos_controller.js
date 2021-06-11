@@ -29,14 +29,19 @@ class produtos_controller {
         }
     };
     async create(req,res){
-        let emp = req.body[0]
-        connection.query(Produtos_query.post, [emp.código, emp.descrição, emp.preço,emp.disponível, emp.destaque, emp[`quantidade em estoque`], emp[`Nome do departamento`]], function (err, rows, fields) {
-            if (err || rows.length == 0){ 
-            return res.status(400).json(resposta_400.Bad_Request)
-            }
+        if (req.params.id != undefined){
+            return res.status(404).json(resposta_400.Not_Found)
+        }
+        else{
+            let emp = req.body[0]
+            connection.query(Produtos_query.post, [emp.código, emp.descrição, emp.preço,emp.disponível, emp.destaque, emp[`quantidade em estoque`], emp[`Nome do departamento`]], function (err, rows, fields) {
+                if (err || rows.length == 0){ 
+                return res.status(400).json(resposta_400.Bad_Request)
+                }
 
-            return res.status(200).json(rows[7])
-        })
+                return res.status(200).json(rows[7])
+            })
+        }
     };
     async update(req, res){
         let emp = req.body[0]

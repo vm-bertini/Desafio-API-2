@@ -4,8 +4,7 @@ const routes = new Router()
 const connection = require('../Database/database_connection');
 const produtos_controller = require('./controllers/produtos_controller');
 const departamentos_controller = require('./controllers/departamentos_controller');
-const resposta_400 = require('../Respostas/400');
-const { Not_Found } = require('./Respostas/400');
+const resposta_400 = require('./Respostas/400');
 
 //Criando conexão com o banco de dados
 connection.connect()
