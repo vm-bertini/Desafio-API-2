@@ -29,7 +29,7 @@ CREATE TABLE `cidade_estado` (
   `cidade` varchar(45) NOT NULL,
   `estado` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +46,7 @@ CREATE TABLE `clientes` (
   `Whatsapp` varchar(14) NOT NULL,
   `Senha` varchar(20) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,7 +61,7 @@ CREATE TABLE `departamentos` (
   `nome` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `nome_UNIQUE` (`nome`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -87,7 +87,7 @@ CREATE TABLE `endereços` (
   KEY `FK_endereços_cidade/estado_idx` (`cidade_estado_id`),
   CONSTRAINT `FK_endereços_cidade/estado` FOREIGN KEY (`cidade_estado_id`) REFERENCES `cidade_estado` (`id`),
   CONSTRAINT `FK_endereços_clientes` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -101,7 +101,7 @@ CREATE TABLE `estoques` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `quantidade em estoque` int DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,7 +123,7 @@ CREATE TABLE `itens` (
   KEY `FK_itens_pedidos_idx` (`pedidos_id`),
   CONSTRAINT `FK_itens_pedidos` FOREIGN KEY (`pedidos_id`) REFERENCES `pedidos` (`ID`),
   CONSTRAINT `FK_itens_produtos` FOREIGN KEY (`produtos_id`) REFERENCES `produtos` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -146,7 +146,7 @@ CREATE TABLE `pedidos` (
   KEY `FK_produto_endereço` (`endereço_id`),
   CONSTRAINT `FK_produto_cliente` FOREIGN KEY (`clientes_id`) REFERENCES `clientes` (`ID`),
   CONSTRAINT `FK_produto_endereço` FOREIGN KEY (`endereço_id`) REFERENCES `endereços` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -164,7 +164,7 @@ CREATE TABLE `pedidos_status` (
   PRIMARY KEY (`ID`),
   KEY `FK_status_pedidos_idx` (`pedidos_id`),
   CONSTRAINT `FK_status_pedidos` FOREIGN KEY (`pedidos_id`) REFERENCES `pedidos` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,8 +188,43 @@ CREATE TABLE `produtos` (
   KEY `FK_produtos_departamento_idx` (`departamento_id`),
   CONSTRAINT `FK_produtos_departamento` FOREIGN KEY (`departamento_id`) REFERENCES `departamentos` (`ID`),
   CONSTRAINT `FK_produtos_estoque` FOREIGN KEY (`estoque_id`) REFERENCES `estoques` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping routines for database 'banco_desafio_api'
+--
+/*!50003 DROP PROCEDURE IF EXISTS `novo produto` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `novo produto`(
+in _código int, 
+in _descrição varchar(255),
+in _preço int, 
+in _disponível varchar(3), 
+in _destaque varchar(3), 
+in _qtd_estoque int, 
+in _Nome_depto varchar(255))
+BEGIN
+Insert into estoques (`quantidade em estoque`) values (_qtd_estoque);
+Insert into departamentos (nome) values (_Nome_depto)
+on duplicate key update departamentos.nome = departamentos.nome;
+insert into produtos (código, descrição, preço, disponível, destaque , estoque_id, departamento_id) 
+select _código,_descrição,_preço,_disponível,_destaque, estoques.id,departamentos.id from departamentos, estoques
+where departamentos.nome = _Nome_depto and estoques.`quantidade em estoque` = _qtd_estoque;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -200,4 +235,4 @@ CREATE TABLE `produtos` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-11  4:02:39
+-- Dump completed on 2021-06-11  4:06:44
